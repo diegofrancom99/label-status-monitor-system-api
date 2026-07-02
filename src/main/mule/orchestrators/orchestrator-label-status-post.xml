@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="orchestrator-label-status-post" doc:id="caac2719-1e09-46be-bdc4-35f46bf9bd7b" >
+		<set-variable value="#[payload]" doc:name="BackUpRequest" doc:id="b7604a2b-f0d4-4f19-af61-52d3dfc86e3d" variableName="BackUpRequest"/>
+		<flow-ref doc:name="Flow Reference Client-SELECT-Consult" doc:id="061c9561-a219-4516-803a-68dbbc551da2" name="client-label-status-post"/>
+		<choice doc:name="Choice" doc:id="5073fa6e-85f8-42f5-8f72-e0d98d144c3b" >
+			<when expression="#[isEmpty(payload)]">
+				<raise-error doc:name="Raise error" doc:id="5ef4fd1c-c260-498c-a323-356c16eeefb3" type="APP:NOT_FOUND" description="No records found."/>
+			</when>
+		</choice>
+		<ee:transform doc:name="Standar Response" doc:id="e9d206c0-87f8-4b27-bff3-a551d531a89d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"plant": vars.BackUpRequest.plant,
+	"resource": vars.BackUpRequest.resource,
+	"order": vars.BackUpRequest.order,
+	"HU_Container": 
+		payload map (item) -> {
+		"Plant": item.Plant,
+		"Resource": item.Resource,
+		"ProcessOrder": item.ProccesOrder,
+		"PalletQty": item.PalletQty,
+		"HandlingUnit": item.HandlingUnit,
+		"PostingDatetime": item.PostinDateTime,
+		"Material": item.Material,
+		"UOM": item.UOM,
+		"LabelStatus": item.LabelStatus,
+		"StatusMessage": item.StatusMessage,
+		"StorageLoc": item.StorageLoc
+	}
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="68b4dd42-14b6-4705-8a6a-6dd6021bc395" message="#[payload]"/>
+	</sub-flow>
+</mule>

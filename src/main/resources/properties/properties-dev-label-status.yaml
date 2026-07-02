@@ -1,0 +1,18 @@
+#--Properties--#
+
+#Connection Listener Config#
+http:
+  host: "0.0.0.0"
+  port: "8081"
+  base-path: "/"
+  path: "api/*"
+  
+  
+#Connection DataBase PostgreSQL#
+db:
+  host: "aws-1-us-east-2.pooler.supabase.com"
+  port: "5432"
+  database: "postgres"
+  user: "postgres.ksgwojqjrnwkrsfvvtal"
+  password: "XNHhv6iDKUuIfaVX"
+  driver: "org.postgresql.Driver"

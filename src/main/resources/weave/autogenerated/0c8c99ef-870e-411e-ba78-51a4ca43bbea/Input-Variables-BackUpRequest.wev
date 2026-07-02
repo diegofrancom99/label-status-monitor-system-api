@@ -1,0 +1,12 @@
+%dw 2.0
+
+type auto_0c8c99ef_870e_411e_ba78_51a4ca43bbea_Input_Variables_BackUpRequest = {
+  resource: String, 
+  HU_Container: Array<{    PalletQty: Number,     Plant: String,     PostingDatetime: String,     UOM: String,     LabelStatus: String,     ProcessOrder: String,     HandlingUnit: String,     Resource: String,     Material: String,     StorageLoc: String,     StatusMessage: String,     _?: Any  } {"label": "HU Container.",
+  "description": "HU Container labels."}> {"description": "List of Handling Units returned by the query."}, 
+  plant: String, 
+  order: String, 
+  _?: Any
+} {"description": "Response label status information.",
+"label": "Label Status Response."}
+

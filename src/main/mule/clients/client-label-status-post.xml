@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<sub-flow name="client-label-status-post" doc:id="0c8c99ef-870e-411e-ba78-51a4ca43bbea" >
+		<db:select doc:name="Consult-SELECT-DB" doc:id="3c49e0f6-9956-4f7f-86f6-59cd22f12e28" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from abel_status where plant = :plant and resource = :resource and proccesorder = :order;]]></db:sql>
+			<db:input-parameters ><![CDATA[#[payload]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Transform Technical" doc:id="b5752f7d-74d2-4234-910f-1dbb9c6d3d33" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+		payload map (item) -> {
+		"Plant": item.plant,
+		"Resource": item.resource,
+		"ProccesOrder": item.proccesorder,
+		"PalletQty": item.palletqty,
+		"HandlingUnit": item.handlingunit,
+		"PostinDateTime": item.postingdatetime,
+		"Material": item.material,
+		"UOM": item.uom,
+		"LabelStatus": item.labelstatus,
+		"StatusMessage": item.statusmessage,
+		"StorageLoc": item.storageloc
+	}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="acf7566e-6c2f-4aac-aaf1-27722ef7a99b" message="#[payload]"/>
+	</sub-flow>
+</mule>
