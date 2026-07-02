@@ -83,12 +83,13 @@ PostgreSQL
 
 ## Flujo de despliegue
 
-1. Publicación en Exchange.
-2. Deploy en CloudHub 2.0.
-3. Registro en API Manager.
-4. Configuración de API Autodiscovery.
-5. Aplicación de Client ID Enforcement.
-6. Consumo desde Postman.
+1. Diseño del RAML.
+2. Publicación en Exchange.
+3. Despliegue en CloudHub 2.0.
+4. Registro de la instancia en API Manager.
+5. Configuración de API Autodiscovery.
+6. Aplicación de Client ID Enforcement.
+7. Pruebas desde Postman.
 
 ---
 
@@ -103,6 +104,19 @@ PostgreSQL
 - Configuración de API Autodiscovery.
 - Implementación de Client ID Enforcement.
 - Pruebas end-to-end utilizando Postman.
+
+---
+
+## Arquitectura de Seguridad
+
+La API utiliza la política **Client ID Enforcement** administrada desde API Manager.
+
+El acceso requiere:
+
+- client_id
+- client_secret
+
+Las políticas son aplicadas mediante **API Autodiscovery**, permitiendo administrar la seguridad sin modificar el código de la aplicación.
 
 ---
 
